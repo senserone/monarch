@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/monarch/!svn/ver/16/monarch/grails-app/domain/com/fh/monarch
+END
+BillItem.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/monarch/!svn/ver/29/monarch/grails-app/domain/com/fh/monarch/BillItem.groovy
+END
+Bill.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/monarch/!svn/ver/29/monarch/grails-app/domain/com/fh/monarch/Bill.groovy
+END
+BillCondition.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/monarch/!svn/ver/29/monarch/grails-app/domain/com/fh/monarch/BillCondition.groovy
+END

@@ -1,0 +1,14 @@
+package com.fh.common
+
+class User {
+
+    
+    
+    
+    static constraints = {
+    }
+    
+    static mapping = {
+         version false
+    }
+}

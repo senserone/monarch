@@ -1,0 +1,43 @@
+10
+
+dir
+22
+http://office.foobarsystem.com/svn/monarch/monarch/web-app
+http://office.foobarsystem.com/svn/monarch
+
+
+
+2012-01-02T10:57:27.971390Z
+21
+soravit
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+e3cdf300-3da0-4d54-b999-d9d550239536
+
+META-INF
+dir
+
+WEB-INF
+dir
+
+css
+dir
+
+images
+dir
+
+js
+dir
+
