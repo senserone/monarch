@@ -6,10 +6,12 @@ class User {
 
 	String username
 	String password
+        
 	boolean enabled
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
+        
         String title
         String email
         String phoneNumber

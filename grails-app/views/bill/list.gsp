@@ -24,17 +24,17 @@
 				<thead>
 					<tr>
 					
+						<th><g:message code="bill.printedDate.label" default="Printed Date" /></th>
+					
 						<th><g:message code="bill.code.label" default="Code" /></th>
 					
 						<th><g:message code="bill.isVat.label" default="Is Vat" /></th>
 					
+						<th><g:message code="bill.type.label" default="Type" /></th>
+					
 						<th><g:message code="bill.status.label" default="Status" /></th>
 					
-						<th><g:message code="bill.billType.label" default="Bill Type" /></th>
-					
 						<th><g:message code="bill.description.label" default="Description" /></th>
-					
-						<th><g:message code="bill.customer.label" default="Customer" /></th>
 					
 					</tr>
 				</thead>
@@ -42,17 +42,17 @@
 				<g:each in="${billInstanceList}" status="i" var="billInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${billInstance.id}">${fieldValue(bean: billInstance, field: "code")}</g:link></td>
+						<td><g:link action="show" id="${billInstance.id}">${fieldValue(bean: billInstance, field: "printedDate")}</g:link></td>
+					
+						<td>${fieldValue(bean: billInstance, field: "code")}</td>
 					
 						<td><g:formatBoolean boolean="${billInstance.isVat}" /></td>
 					
+						<td>${fieldValue(bean: billInstance, field: "type")}</td>
+					
 						<td>${fieldValue(bean: billInstance, field: "status")}</td>
 					
-						<td>${fieldValue(bean: billInstance, field: "billType")}</td>
-					
 						<td>${fieldValue(bean: billInstance, field: "description")}</td>
-					
-						<td>${fieldValue(bean: billInstance, field: "customer")}</td>
 					
 					</tr>
 				</g:each>

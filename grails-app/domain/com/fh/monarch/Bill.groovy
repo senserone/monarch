@@ -1,16 +1,83 @@
-package com.fh.monarch
+package com.fh.monarch 
 import com.fh.common.*
+import org.apache.commons.collections.list.LazyList;
+import org.apache.commons.collections.FactoryUtils;
 
 class Bill {
+    public enum BillType{
+        B("Bill"),
+        Q("Quotation")
+        
+        final String value;
+ 
+        BillType(String value) {
+            this.value = value
+        }
+        String toString(){
+            value
+        }
+        String getKey(){
+            name()
+        }
+        static list() {
+            [B, Q]
+        }
+    }
     
-    public static final int TYPE_BILL = 1 
-    public static final int TYPE_QUOTATION = 2
+    public enum BillStatus{
+        DEL("Deleted"),
+        PEN("Pending"),
+        PRI("Printed"),
+        SEN("Sent"),
+        PAI("Paid")
+        
+        final String value
+ 
+        BillStatus(String value) {
+            this.value = value
+        }
+        String toString(){
+            value;
+        }
+        String getKey(){
+            name()
+        }
+        static list() {
+            [DEL, PEN, PRI, SEN, PAI]
+        }
+    }
     
-    public static final int STATUS_DELETED = 0
-    public static final int STATUS_PENDING = 1
-    public static final int STATUS_PRINTED = 2
-    public static final int STATUS_SENT = 3
-    public static final int STATUS_PAID = 4
+    static constraints = {
+        printedDate( nullable:true, display:false)
+        code( nullable:false, blank:false )
+        isVat( nullable:false, blank:false, defalut:false )
+        type( blank:false, inList:BillType.list(), minSize:1, maxSize:1 )
+        status( blank:false, inList:BillStatus.list(), minSize:3, maxSize:3 )
+        description( nullable:true, maxSize:1500, widget:true )
+    }
+    
+    static mapping = {
+        items sort:"ordinal"
+        condition sort:"id"
+        autoTimestamp true
+        version false
+        items cascade:"all-delete-orphan"
+        conditions cascade:"all-delete-orphan" 
+    }
+    
+    static transients = [
+        "vatPrice",
+        "subTotalPrice",
+        "totalPrice"
+    ]
+    
+    static hasMany = [items: BillItem, conditions: BillCondition]
+     
+    List items = new ArrayList() 
+    List conditions = new ArrayList()
+    
+    BillType type
+    BillStatus status
     
     Date dateCreated 
     Date lastUpdated
@@ -19,28 +86,10 @@ class Bill {
     
     String code
     boolean isVat
-    Integer status 
-    Integer billType
     String description
     
     Customer customer
     Office office
-    
-    static hasMany = [items:BillItem,conditions:BillCondition]
-    static constraints = {
-        printedDate(nullable:true)
-        code(nullable:false,blank:false)
-        isVat(nullable:false,blank:false,defalut:false)
-        status(inList:[STATUS_PENDING,STATUS_PRINTED,STATUS_SENT,STATUS_PAID,STATUS_DELETED])
-        billType(inList:[TYPE_BILL,TYPE_QUOTATION])
-        description(nullable:true, maxSize:1500,widget:true)
-    }
-    static mapping = {
-        items sort:"ordinal"
-        condition sort:"id"
-        autoTimestamp true
-        version false
-    }
     
     def getSubTotalPrice(){
         def result = 0.0 as double
@@ -64,9 +113,17 @@ class Bill {
         }
         return result.trunc(2) 
     }
-    static transients = [
-        "vatPrice",
-        "subTotalPrice",
-        "totalPrice"
-    ]
+    
+    def getItemsList() {
+        return LazyList.decorate(
+            items,
+            FactoryUtils.instantiateFactory(BillItem.class))
+    }
+    
+    def getConditionsList() {
+        return LazyList.decorate(
+            conditions,
+            FactoryUtils.instantiateFactory(BillCondition.class))
+    }
+    
 }

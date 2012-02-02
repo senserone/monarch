@@ -1,10 +1,28 @@
 package com.fh.monarch
 
 class BillItem {
-    public static final int DISCOUNT_TYPE_NO_DISCOUNT = 0
-    public static final int DISCOUNT_TYPE_PERCENT = 1
-    public static final int DISCOUNT_TYPE_BAHT = 2
-    public static final DISCOUNT_NAMES = ["No Discount", "Percent", "Baht"]
+    public enum DiscountType{
+        N("No Discount"),
+        P("Percent"),
+        B("Baht")
+        
+        final String value;
+ 
+        DiscountType(String value) {
+            this.value = value;
+        }
+        String toString(){
+            value;
+        }
+        String getKey(){
+            name()
+        }
+        static list() {
+            [N,P,B]
+        }
+    }
+    
+    
     Integer ordinal
     String model
     String brand
@@ -14,23 +32,50 @@ class BillItem {
     
     Double unitPrice
     Double discount
-    Integer discountType
+    
+    DiscountType discountType
+    
     Double total
 
     static belongsTo = [bill: Bill]
     
+    boolean deleted
+    static transients = [ 'deleted', 'total' ]
+    
     static constraints = {
-        ordinal(nullable:false,blank:false)
-        model(nullable:true,blank:true)
-        brand(nullable:true,blank:true)
-        description(nullable:false,blank:false, maxSize:1500,widget:true)
-        unitPrice(nullable:false,blank:false)
-        quantity(nullable:false,blank:false)
-        discountType()
-        discount(nullable:true,blank:true)
+        ordinal( nullable:false, blank:false )
+        model( nullable:false, blank:true )
+        brand( nullable:true, blank:true )
+        description( nullable:false, blank:false, maxSize:1500, widget:true )
+        unitPrice( nullable:false, blank:false, min: 0d )
+        quantity( nullable:false, blank:false, min: 0 )
+        discountType( blank:false, inList:DiscountType.list(), minSize:1, maxSize:1 )
+        discount( nullable:true, blank:true, min: 0d )
+        total( display:false, min: 0d )
     }
     
     static mapping = {
-         version false
+        version false
+    }
+    
+    def String toString() {
+        return "($ordinal) ${model} - ${total}"
+    }
+    
+    def double getTotal(){
+        def result = 0d
+        
+        if(discount?.key){
+            def dt = discountType?.key
+            if(dt=="No Discount"){
+                result = quantity*unitPrice
+            }else if(dt=="Percent"){
+                result = (quantity*unitPrice)*(1-(discount/100))
+            }else if(dt=="Baht"){
+                result = (quantity*unitPrice) - discount
+            }
+        }
+        
+        return result
     }
 }

@@ -20,15 +20,15 @@
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<table>
+			<table class="onlyFilter">
 				<thead>
 					<tr>
 					
-						<g:sortableColumn property="title" title="${message(code: 'billCondition.title.label', default: 'Title')}" />
+						<th><g:message code="billCondition.title.label" default="Title" /></th>
 					
-						<g:sortableColumn property="about" title="${message(code: 'billCondition.about.label', default: 'About')}" />
+						<th><g:message code="billCondition.about.label" default="About" /></th>
 					
-						<g:sortableColumn property="description" title="${message(code: 'billCondition.description.label', default: 'Description')}" />
+						<th><g:message code="billCondition.description.label" default="Description" /></th>
 					
 					</tr>
 				</thead>
