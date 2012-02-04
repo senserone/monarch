@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/monarch/!svn/ver/12/monarch/grails-app/views/test
+END
+edit.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/monarch/!svn/ver/12/monarch/grails-app/views/test/edit.gsp
+END
+create.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/monarch/!svn/ver/12/monarch/grails-app/views/test/create.gsp
+END
+show.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/monarch/!svn/ver/12/monarch/grails-app/views/test/show.gsp
+END
+list.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/monarch/!svn/ver/12/monarch/grails-app/views/test/list.gsp
+END
+_form.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/monarch/!svn/ver/12/monarch/grails-app/views/test/_form.gsp
+END

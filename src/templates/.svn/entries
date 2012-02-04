@@ -1,0 +1,40 @@
+10
+
+dir
+22
+http://office.foobarsystem.com/svn/monarch/monarch/src/templates
+http://office.foobarsystem.com/svn/monarch
+
+
+
+2011-12-29T09:34:54.703511Z
+11
+chawan
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+e3cdf300-3da0-4d54-b999-d9d550239536
+
+artifacts
+dir
+
+scaffolding
+dir
+
+testing
+dir
+
+war
+dir
+

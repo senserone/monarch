@@ -1,0 +1,103 @@
+package com.fh.monarch
+
+import org.springframework.dao.DataIntegrityViolationException
+
+class BillConditionController {
+
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+
+    def index() {
+        redirect(action: "list", params: params)
+    }
+
+    def list() {
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [billConditionInstanceList: BillCondition.list(params), billConditionInstanceTotal: BillCondition.count()]
+    }
+
+    def create() {
+        [billConditionInstance: new BillCondition(params)]
+    }
+
+    def save() {
+        def billConditionInstance = new BillCondition(params)
+        if (!billConditionInstance.save(flush: true)) {
+            render(view: "create", model: [billConditionInstance: billConditionInstance])
+            return
+        }
+
+		flash.message = message(code: 'default.created.message', args: [message(code: 'billCondition.label', default: 'BillCondition'), billConditionInstance.id])
+        redirect(action: "show", id: billConditionInstance.id)
+    }
+
+    def show() {
+        def billConditionInstance = BillCondition.get(params.id)
+        if (!billConditionInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'billCondition.label', default: 'BillCondition'), params.id])
+            redirect(action: "list")
+            return
+        }
+
+        [billConditionInstance: billConditionInstance]
+    }
+
+    def edit() {
+        def billConditionInstance = BillCondition.get(params.id)
+        if (!billConditionInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'billCondition.label', default: 'BillCondition'), params.id])
+            redirect(action: "list")
+            return
+        }
+
+        [billConditionInstance: billConditionInstance]
+    }
+
+    def update() {
+        def billConditionInstance = BillCondition.get(params.id)
+        if (!billConditionInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'billCondition.label', default: 'BillCondition'), params.id])
+            redirect(action: "list")
+            return
+        }
+
+        if (params.version) {
+            def version = params.version.toLong()
+            if (billConditionInstance.version > version) {
+                billConditionInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                          [message(code: 'billCondition.label', default: 'BillCondition')] as Object[],
+                          "Another user has updated this BillCondition while you were editing")
+                render(view: "edit", model: [billConditionInstance: billConditionInstance])
+                return
+            }
+        }
+
+        billConditionInstance.properties = params
+
+        if (!billConditionInstance.save(flush: true)) {
+            render(view: "edit", model: [billConditionInstance: billConditionInstance])
+            return
+        }
+
+		flash.message = message(code: 'default.updated.message', args: [message(code: 'billCondition.label', default: 'BillCondition'), billConditionInstance.id])
+        redirect(action: "show", id: billConditionInstance.id)
+    }
+
+    def delete() {
+        def billConditionInstance = BillCondition.get(params.id)
+        if (!billConditionInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'billCondition.label', default: 'BillCondition'), params.id])
+            redirect(action: "list")
+            return
+        }
+
+        try {
+            billConditionInstance.delete(flush: true)
+			flash.message = message(code: 'default.deleted.message', args: [message(code: 'billCondition.label', default: 'BillCondition'), params.id])
+            redirect(action: "list")
+        }
+        catch (DataIntegrityViolationException e) {
+			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'billCondition.label', default: 'BillCondition'), params.id])
+            redirect(action: "show", id: params.id)
+        }
+    }
+}

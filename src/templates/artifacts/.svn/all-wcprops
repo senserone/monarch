@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/monarch/!svn/ver/11/monarch/src/templates/artifacts
+END
+Controller.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/monarch/!svn/ver/11/monarch/src/templates/artifacts/Controller.groovy
+END
+TagLib.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/monarch/!svn/ver/11/monarch/src/templates/artifacts/TagLib.groovy
+END
+Script.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/monarch/!svn/ver/11/monarch/src/templates/artifacts/Script.groovy
+END
+Filters.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/monarch/!svn/ver/11/monarch/src/templates/artifacts/Filters.groovy
+END
+hibernate.cfg.xml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/monarch/!svn/ver/11/monarch/src/templates/artifacts/hibernate.cfg.xml
+END
+ScaffoldingController.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/monarch/!svn/ver/11/monarch/src/templates/artifacts/ScaffoldingController.groovy
+END
+WebTest.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/monarch/!svn/ver/11/monarch/src/templates/artifacts/WebTest.groovy
+END
+Service.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/monarch/!svn/ver/11/monarch/src/templates/artifacts/Service.groovy
+END
+DomainClass.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/monarch/!svn/ver/11/monarch/src/templates/artifacts/DomainClass.groovy
+END
+Tests.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/monarch/!svn/ver/11/monarch/src/templates/artifacts/Tests.groovy
+END

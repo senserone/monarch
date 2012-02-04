@@ -1,0 +1,132 @@
+package com.fh.monarch
+
+class BillController {
+     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+     
+    def index() { redirect(action: 'list')}
+    
+    def create() {
+        [billInstance: new Bill(params)]
+    }
+    
+    def edit() { }
+    
+    def createItem = {  ordinal, model, brand, description, quantity, unitPrice, discount, discountType, total ->
+        return ordinal
+    }
+    
+    def save() { 
+        def bill
+        
+        // initilize
+        def billType = params.billType
+        def dateOnBill = params.dateOnBill
+        def customer = params.customer
+        def description = params.description
+        def customerId  = params.customer.id
+        
+        def isAutoGen = params.isAutoGen
+        def code = params.code
+        def isVat = params.isVat
+        
+        def conditions 
+        println params.conditions
+        if(params.conditions.class in String.class)
+            conditions = [new String(params.conditions)]
+        else
+            conditions = params.conditions.collect {it as int}
+        
+        def models, brands, descriptions, quantities, unitPrices, discounts, discountTypes, totals
+        
+        if(params.models.class in String.class){
+           models = [new String(params.models)] 
+           brands = [new String(params.brands)] 
+           descriptions = [new String(params.descs)] 
+           quantities = [new Integer(params.qtts)] 
+           unitPrices = [new Double(params.ppis)] 
+           discounts = [new Double(params.disAmounts)] 
+           discountTypes = [new String(params.disTypes)] 
+           totals = [new Double(params.totalPrices)] 
+        }else {
+           models = params.models.collect {it as String}
+           brands = params.brands.collect {it as String}
+           descriptions = params.descs.collect {it as String}
+           quantities = params.qtts.collect {it as Integer}
+           unitPrices = params.ppis.collect {it as Double}
+           discounts = params.disAmounts.collect {it as double}
+           discountTypes = params.disTypes.collect {it as String}
+           totals = params.totalPrices.collect {it as Double}
+        }
+        
+        // create bill
+        println "create bill"                  
+        bill = new Bill(dateCreated:new Date(),
+                        lastUpdated: new Date(),
+                        dateOnBill: dateOnBill as Date,
+                        code: generateCode(isAutoGen,code),
+                        isVat: isVat=="on"? true:false,
+                        status: Bill.STATUS_PENDING,
+                        billType: Bill."${billType}",
+                        description: description,
+                        customer: com.fh.common.Customer.get(customer.id) as com.fh.common.Customer,
+                        office: com.fh.common.Office.get(1)
+                        )
+        
+        // create items
+        println "create Item"
+        int size = models.size()
+        
+        def item
+        
+        // add items
+        for(int i in (0..<size)){
+            bill.addToItems(new com.fh.monarch.BillItem(ordinal:i+1 as Integer,
+                model:models[i] as String,
+                brand: brands[i] as String,
+                description: descriptions[i] as String,
+                quantity: quantities[i] as Integer,
+                unitPrice: unitPrices[i] as Double,
+                discount: discounts[i] as Double, 
+                discountType: com.fh.monarch.BillItem."${discountTypes[i]}" as Integer,
+                total: totals[i] as Double))
+            
+            bill.save(flush:true, failOnError:true)
+        }
+        
+        // add condition
+        for(int i in (0..<conditions.size())){
+            bill.addToConditions(com.fh.monarch.BillCondition.get(conditions[i])).save(flush:true, failOnError:true)
+        }
+        
+        render "params.billType: " + params.billType + "</br>" +
+        "params.dateOnBill: " + params.dateOnBill + "</br>"+
+        "params.description: " + params.description + "</br>"+
+        "params.models: " + params.models + "</br>"+
+        "params.descs: " + params.descs + "</br>"+
+        "params.conditions: " + params.conditions + "</br>"+
+        "params.isAutoGen: " + params.isAutoGen + "</br>"+  // can be "on" and "null'"
+        "params.code: " + params.code + "</br>"+
+        "params.isVat: " + params.isVat + "</br>"+          //can be "on" and "null'"
+        "params.qtts: " + params.qtts + "</br>"+
+        "params.disAmounts: " + params.disAmounts + "</br>"+
+        "params.ppis: " + params.ppis + "</br>"+
+        "params.disTypes: " + params.disTypes + "</br>"+
+        "params.isAutoGen: " + params.isAutoGen + "</br>"+
+        "params.brands: " + params.brands + "</br>"+
+        "params.customer: " + params.customer + "</br>"+
+        "params.customer.id: " + params.customer.id + "</br>"+
+        "params.totalPrices: " + params.totalPrices + "</br>"+
+        "params::" + "</br>"+ params
+    }
+    
+    def generateCode(isAutoGen, code){
+        return "thisissamplecode"
+    }
+    
+    def list() {
+         params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [billInstanceList: Bill.list(params), billInstanceTotal: Bill.count()]
+    }
+    
+    def show() {}
+}

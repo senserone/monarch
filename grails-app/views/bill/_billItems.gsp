@@ -5,14 +5,19 @@
   var formClone;
   var htmlId;
   
+  // about item
   function addItem(){
     // show dialog Add-Item form
     clone = $("#item_clone").clone();
+    
     htmlId = 'itemsList['+childCount+'].';
     
-    clone.find("input[id$=id]")
-           .attr('id',htmlId + 'id')
-           .attr('name',htmlId + 'id');
+    var modelInput = clone.find("input[id$=model]");
+    var brandInput = clone.find("input[id$=brand]");
+    var descriptionInput = clone.find("textarea[id$=description]");
+    var quantityInput = clone.find("input[id$=quantity]");
+    var unitPriceInput = clone.find("input[id$=unitPrice]");
+    var discountInput = clone.find("input[id$=discount]");
            
     clone.find("input[id$=deleted]")
            .attr('id',htmlId + 'deleted')
@@ -23,45 +28,46 @@
            .attr('name',htmlId + 'new');
     
     // model
-    clone.find("input[id$=model]")
-           .attr('id',htmlId + 'model')
-           .attr('name',htmlId + 'model');
+    modelInput.attr('id',htmlId + 'model')
+              .attr('name',htmlId + 'model');
     
     // brand
-    clone.find("input[id$=brand]")
-           .attr('id',htmlId + 'brand')
-           .attr('name',htmlId + 'brand');
+    brandInput.attr('id',htmlId + 'brand')
+              .attr('name',htmlId + 'brand');
     
     // description
-    clone.find("input[id$=description]")
-           .attr('id',htmlId + 'description')
-           .attr('name',htmlId + 'description');
+    descriptionInput.attr('id',htmlId + 'description')
+                    .attr('name',htmlId + 'description');
     
     // quantity
-    clone.find("input[id$=quantity]")
-           .attr('id',htmlId + 'quantity')
-           .attr('name',htmlId + 'quantity');
+    quantityInput.attr('id',htmlId + 'quantity')
+                 .attr('name',htmlId + 'quantity');
     
     // unitPrice
-    clone.find("input[id$=unitPrice]")
-           .attr('id',htmlId + 'unitPrice')
-           .attr('name',htmlId + 'unitPrice');
+    unitPriceInput.attr('id',htmlId + 'unitPrice')
+                  .attr('name',htmlId + 'unitPrice');
     
     // discountType
-    clone.find("input[id$=type]")
-           .attr('id',htmlId + 'type')
-           .attr('name',htmlId + 'type');
+    clone.find("select[id$=discountType]")
+           .attr('id',htmlId + 'discountType')
+           .attr('name',htmlId + 'discountType');
            
     // discount           
-    clone.find("input[id$=discount]")
-           .attr('id',htmlId + 'discount')
-           .attr('name',htmlId + 'discount');
+    discountInput.attr('id',htmlId + 'discount')
+                 .attr('name',htmlId + 'discount');
     
     // id
     clone.attr('id', 'item'+childCount);
     
     $('#childItemList').append(clone);
     clone.show();
+    
+    modelInput.focus();
+    brandInput.focus();
+    descriptionInput.focus();
+    quantityInput.focus();
+    unitPriceInput.focus();
+    discountInput.focus();
     childCount++;
   }
   
@@ -83,15 +89,48 @@
           prnt.hide();
       }
   });
+  
+  $('.hide-item').live('click', function(){
+    htmlId = 'itemsList['+childCount+'].';
+    var prnt = $(this).parents(".item-table");
+    var hidTr = prnt.find('tr[class$=hidable]')
+    var itemReview = prnt.find('div[class$=item-review]')
+    var hideBtn = prnt.find('span[class$=hide-item]')
+    var showBtn = prnt.find('span[class$=show-item]')
+    
+    var modelVal = prnt.find("input[id$=model]").val();
+    var quantityVal = prnt.find("input[id$=quantity]").val();
+    var unitPriceVal = prnt.find("input[id$=unitPrice]").val();
+    
+    itemReview.text("model: " + modelVal + " | quantity: " + quantityVal + " | unit price: " + unitPriceVal );
+    
+    hideBtn.hide();
+    hidTr.hide();
+    itemReview.show();
+    showBtn.show();
+  });
+  
+  $('.show-item').live('click', function(){
+    var prnt = $(this).parents(".item-table");
+    var hidTr = prnt.find('tr[class$=hidable]')
+    var itemReview = prnt.find('div[class$=item-review]')
+    var hideBtn = prnt.find('span[class$=hide-item]')
+    var showBtn = prnt.find('span[class$=show-item]')
+    
+    hideBtn.show();
+    hidTr.show();
+    itemReview.hide();
+    showBtn.hide();
+  });
  
 </script>
 <table>
-<div id="childItemList">
-  <g:each var="item" in="${billInstance.items}" status="i">
-    <!-- Render the billItem template (_billItem.gsp) here -->
-    <tr><g:render template='billItem' model="['item':item,'i':i,'hidden':false]"/></tr>
-    <!-- Render the billItem template (_billItem.gsp) here -->
-  </g:each>
-</div>
-  </table>
+  <div id="childItemList">
+    <g:each var="item" in="${billInstance.items}" status="i">
+      <!-- Render the billItem template (_billItem.gsp) here -->
+      <g:render template='billItem' model="['item':item,'i':i,'hidden':false]"/>
+      <!-- Render the billItem template (_billItem.gsp) here -->
+    </g:each>
+  </div>
+</table>
 <input type="button" value="Add Item" onclick="addItem();" />
